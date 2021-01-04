@@ -46,7 +46,8 @@ public class HomeTicketsAdapter extends RecyclerView.Adapter<HomeTicketsAdapter.
         } else {
             for (Ticket item : arrayList) {
                 if (item.getDepartmentId().toString().toLowerCase().contains(charText.toLowerCase()) ||
-                        item.getDescription().toLowerCase().contains(charText.toLowerCase())) {
+                        item.getDescription().toLowerCase().contains(charText.toLowerCase()) ||
+                        item.getSubject().toLowerCase().contains(charText.toLowerCase())) {
 
                     itemList.add(item);
                 }
@@ -75,8 +76,7 @@ public class HomeTicketsAdapter extends RecyclerView.Adapter<HomeTicketsAdapter.
         holder.subtitle.setText("Ticket " + ticket.getStatus());
         if (ticket.getStatus().equalsIgnoreCase("closed")) {
             holder.ticketStatus.setBackgroundColor(context.getResources().getColor(R.color.colorGreen));
-        }
-        if (ticket.getStatus().equalsIgnoreCase("pending")) {
+        } else if (ticket.getStatus().equalsIgnoreCase("pending")) {
             holder.ticketStatus.setBackgroundColor(context.getResources().getColor(R.color.colorOriginalBlue));
             if (ticket.getAssignedTo() != null && ticket.getStaff() != null) {
                 holder.subtitle.setText("Assigned to: " + ticket.getStaff().getName());

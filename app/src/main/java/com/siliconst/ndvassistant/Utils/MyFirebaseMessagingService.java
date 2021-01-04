@@ -7,10 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.provider.Settings;
+import android.telecom.Call;
 import android.util.Log;
 
 
+import com.siliconst.ndvassistant.Activities.ListOfRepliesToTicket;
 import com.siliconst.ndvassistant.Activities.MainActivity;
+import com.siliconst.ndvassistant.Activities.NoticeBoards;
+import com.siliconst.ndvassistant.Models.NotificationModel;
 import com.siliconst.ndvassistant.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -83,6 +87,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("message", "This is my message!");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
     private void handleNow(String notificationTitle, String messageBody) {
 
         int num = (int) System.currentTimeMillis();
@@ -91,9 +96,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //        if (type.equalsIgnoreCase("adActivated")) {
 //            resultIntent = new Intent(this, MyAds.class);
 //        } else if (type.equalsIgnoreCase("marketing")) {
-        if (type.equals("chat")) {
-//            resultIntent = new Intent(this, ChattingScreen.class);
-//            resultIntent.putExtra("roomId", Integer.parseInt(Id));
+        if (type.equals("reply")) {
+            resultIntent = new Intent(this, ListOfRepliesToTicket.class);
+            resultIntent.putExtra("ticketId", Integer.parseInt(Id));
+            resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+        } else if (type.equalsIgnoreCase("statusChange")) {
+            resultIntent = new Intent(this, MainActivity.class);
+            resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        } else if (type.equalsIgnoreCase("noticeboard")) {
+            resultIntent = new Intent(this, NoticeBoards.class);
+
+        } else if (type.equalsIgnoreCase("notification")) {
+            resultIntent = new Intent(this, MainActivity.class);
+            resultIntent.putExtra("notification","notification");
+            NotificationModel model = new NotificationModel(title, message);
+            SharedPrefs.setNotification(model);
+
 
         } else {
             resultIntent = new Intent(this, MainActivity.class);

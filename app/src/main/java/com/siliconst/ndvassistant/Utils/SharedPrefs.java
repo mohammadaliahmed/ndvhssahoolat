@@ -3,6 +3,7 @@ package com.siliconst.ndvassistant.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.siliconst.ndvassistant.Models.NotificationModel;
 import com.siliconst.ndvassistant.Models.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,7 +36,6 @@ public class SharedPrefs {
                 }.getType());
         return playersList;
     }
-
 
 
     public static String getadminFcmKey() {
@@ -81,6 +81,20 @@ public class SharedPrefs {
     public static User getUser() {
         Gson gson = new Gson();
         User customer = gson.fromJson(preferenceGetter("customerModel"), User.class);
+
+        return customer;
+    }
+
+    public static void setNotification(NotificationModel model) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(model);
+        preferenceSetter("NotificationModel", json);
+    }
+
+    public static NotificationModel getNotification() {
+        Gson gson = new Gson();
+        NotificationModel customer = gson.fromJson(preferenceGetter("NotificationModel"), NotificationModel.class);
 
         return customer;
     }

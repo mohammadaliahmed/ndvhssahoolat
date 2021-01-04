@@ -1,6 +1,7 @@
 package com.siliconst.ndvassistant.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.siliconst.ndvassistant.Activities.ShowImage;
 import com.siliconst.ndvassistant.Models.Notice;
 import com.siliconst.ndvassistant.Models.Reply;
 import com.siliconst.ndvassistant.R;
@@ -50,7 +52,7 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
         Reply reply = itemList.get(position);
         holder.text.setText(reply.getReply());
         holder.name.setText(reply.getUser().getName());
-        holder.date.setText(reply.getCreatedAt());
+        holder.date.setText(CommonUtils.getCorrectDateFromTimeStamp(reply.getCreatedAt()));
         if (reply.getAttachment() != null) {
             holder.downloadAttachment.setVisibility(View.VISIBLE);
             holder.fileName.setText(reply.getAttachment());
@@ -61,7 +63,9 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
         holder.fileName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(context, ShowImage.class);
+                i.putExtra("url", reply.getAttachment());
+                context.startActivity(i);
             }
         });
 

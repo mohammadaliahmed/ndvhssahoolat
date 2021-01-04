@@ -49,8 +49,14 @@
         <activity
             android:name=".Activities.NoticeBoards"
             android:theme="@style/AppThemeBlue.NoActionBar" />
-        <activity android:name=".Activities.ListOfRepliesToTicket"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Activities.ListOfRepliesToTicket"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.ShowImage"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.EditProfile"
+            android:windowSoftInputMode="adjustPan"/>
 
 
         <service android:name="com.siliconst.ndvassistant.Utils.MyFirebaseMessagingService">

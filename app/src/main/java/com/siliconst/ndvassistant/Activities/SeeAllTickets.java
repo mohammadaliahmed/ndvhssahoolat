@@ -51,6 +51,7 @@ public class SeeAllTickets extends AppCompatActivity {
     ImageView back;
     ImageView createTicket;
     ImageView search;
+    ImageView profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class SeeAllTickets extends AppCompatActivity {
         recycler = findViewById(R.id.recycler);
         back = findViewById(R.id.back);
         search = findViewById(R.id.search);
+        profile = findViewById(R.id.profile);
         departmentRecycler = findViewById(R.id.departmentRecycler);
         departmentsListAdapter = new DepartmentsListAdapter(this, departmentList, new DepartmentsListAdapter.DepartmentListAdapterCallbacks() {
             @Override
@@ -80,6 +82,12 @@ public class SeeAllTickets extends AppCompatActivity {
             }
         });
 
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SeeAllTickets.this, EditProfile.class));
+            }
+        });
         homeTicketsAdapter = new HomeTicketsAdapter(this, ticketList);
         recycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycler.setAdapter(homeTicketsAdapter);
@@ -101,7 +109,7 @@ public class SeeAllTickets extends AppCompatActivity {
     }
 
     private void showSearchDialog() {
-        final Dialog dialog = new Dialog(this,android.R.style.Theme_Light_NoTitleBar);
+        final Dialog dialog = new Dialog(this, android.R.style.Theme_Light_NoTitleBar);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -109,11 +117,11 @@ public class SeeAllTickets extends AppCompatActivity {
         View layout = layoutInflater.inflate(R.layout.search_dialog_full, null);
 
         dialog.setContentView(layout);
-        ImageView close=layout.findViewById(R.id.close);
-        EditText search=layout.findViewById(R.id.search);
-        RecyclerView ticketsRecycler=layout.findViewById(R.id.ticketsRecycler);
-        ticketsRecycler.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
-        HomeTicketsAdapter homeTicketsAdapter=new HomeTicketsAdapter(this,ticketList);
+        ImageView close = layout.findViewById(R.id.close);
+        EditText search = layout.findViewById(R.id.search);
+        RecyclerView ticketsRecycler = layout.findViewById(R.id.ticketsRecycler);
+        ticketsRecycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        HomeTicketsAdapter homeTicketsAdapter = new HomeTicketsAdapter(this, ticketList);
         ticketsRecycler.setAdapter(homeTicketsAdapter);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,8 +147,6 @@ public class SeeAllTickets extends AppCompatActivity {
         });
 
 
-
-
         dialog.show();
 
     }
@@ -160,7 +166,7 @@ public class SeeAllTickets extends AppCompatActivity {
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.code() == 200) {
                     if (response.body().getTickets() != null) {
-                        ticketList=response.body().getTickets();
+                        ticketList = response.body().getTickets();
                         homeTicketsAdapter.updateList(response.body().getTickets());
                     }
                 } else {

@@ -23,6 +23,13 @@ public interface UserClient {
 
     );
 
+    @POST("api/uploadFileToUploads")
+    @Multipart
+    Call<ResponseBody> uploadFileToUploads(
+            @Part MultipartBody.Part file, @Part("photo") RequestBody name
+
+    );
+
 
     @Headers("Content-Type: application/json")
     @POST("api/user/login")
@@ -154,6 +161,13 @@ public interface UserClient {
     @Headers("Content-Type: application/json")
     @POST("api/user/updateFcmKey")
     Call<ApiResponse> updateFcmKey(
+            @Body JsonObject jsonObject
+
+    );
+
+    @Headers("Content-Type: application/json")
+    @POST("api/user/updateProfile")
+    Call<ApiResponse> updateProfile(
             @Body JsonObject jsonObject
 
     );

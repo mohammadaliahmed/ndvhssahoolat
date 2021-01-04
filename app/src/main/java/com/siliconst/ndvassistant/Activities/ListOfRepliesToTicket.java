@@ -1,5 +1,6 @@
 package com.siliconst.ndvassistant.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.fxn.pix.Options;
+import com.fxn.pix.Pix;
 import com.google.gson.JsonObject;
 import com.siliconst.ndvassistant.Activities.UserManagement.LoginActivity;
 import com.siliconst.ndvassistant.Adapters.RepliesAdapter;
@@ -23,13 +27,20 @@ import com.siliconst.ndvassistant.NetworkResponses.ApiResponse;
 import com.siliconst.ndvassistant.R;
 import com.siliconst.ndvassistant.Utils.AppConfig;
 import com.siliconst.ndvassistant.Utils.CommonUtils;
+import com.siliconst.ndvassistant.Utils.CompressImage;
 import com.siliconst.ndvassistant.Utils.SharedPrefs;
 import com.siliconst.ndvassistant.Utils.UserClient;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +57,10 @@ public class ListOfRepliesToTicket extends AppCompatActivity {
     EditText message;
     private String messageToSend;
     ImageView close;
+    ImageView camera;
+    private ArrayList<String> mSelected = new ArrayList<>();
+    private String imageUrl;
+    private String liveFileUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +73,7 @@ public class ListOfRepliesToTicket extends AppCompatActivity {
         sendMessage = findViewById(R.id.sendMessage);
         message = findViewById(R.id.message);
         title = findViewById(R.id.title);
+        camera = findViewById(R.id.camera);
         description = findViewById(R.id.description);
         close = findViewById(R.id.close);
         recycler = findViewById(R.id.recycler);
@@ -79,10 +95,42 @@ public class ListOfRepliesToTicket extends AppCompatActivity {
                 if (message.getText().length() == 0) {
                     message.setError("Cant send empty message");
                 } else {
-                    sendMessageNow();
+                    if (mSelected.size() > 0) {
+                        uploadImage(imageUrl);
+                    } else {
+                        sendMessageNow();
+                    }
+
                 }
             }
         });
+
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Options options = Options.init()
+                        .setRequestCode(100)                                           //Request code for activity results
+                        .setCount(1)                                                   //Number of images to restict selection count
+                        .setExcludeVideos(true)                                       //Option to exclude videos
+                        .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
+                        ;                                       //Custom Path For media Storage
+
+                Pix.start(ListOfRepliesToTicket.this, options);
+            }
+        });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 100) {
+            mSelected = data.getStringArrayListExtra(Pix.IMAGE_RESULTS);
+            Glide.with(ListOfRepliesToTicket.this).load(mSelected.get(0)).into(camera);
+            CompressImage compressImage = new CompressImage(this);
+            imageUrl = compressImage.compressImage(mSelected.get(0));
+
+        }
 
 
     }
@@ -90,6 +138,7 @@ public class ListOfRepliesToTicket extends AppCompatActivity {
     private void sendMessageNow() {
         messageToSend = message.getText().toString();
         message.setText("");
+        Glide.with(this).load(R.drawable.ic_camera_black).into(camera);
 
         UserClient getResponse = AppConfig.getRetrofit().create(UserClient.class);
 
@@ -99,7 +148,9 @@ public class ListOfRepliesToTicket extends AppCompatActivity {
         map.addProperty("ticketId", ticketId);
         map.addProperty("reply", messageToSend);
         map.addProperty("userId", SharedPrefs.getUser().getId());
-
+        if (liveFileUrl != null) {
+            map.addProperty("liveUrl", liveFileUrl);
+        }
 
         Call<ApiResponse> call = getResponse.sendReply(map);
         call.enqueue(new Callback<ApiResponse>() {
@@ -120,6 +171,43 @@ public class ListOfRepliesToTicket extends AppCompatActivity {
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
 
+            }
+        });
+    }
+
+    private void uploadImage(String path) {
+        CommonUtils.showToast("Uploading Image");
+        File file = new File(path);
+
+        UserClient service = AppConfig.getRetrofit().create(UserClient.class);
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("photo", file.getName(), requestBody);
+        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
+        // finally, execute the request
+        Call<ResponseBody> call = service.uploadFile(fileToUpload, filename);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    try {
+
+                        String url = response.body().string();
+                        liveFileUrl = url;
+                        sendMessageNow();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                CommonUtils.showToast(t.getMessage());
             }
         });
     }
@@ -160,9 +248,12 @@ public class ListOfRepliesToTicket extends AppCompatActivity {
     }
 
     private void setupTicketUi() {
-        tokenNumber.setText("Ticket #:   " + ticketModel.getTokenNo() + " | Date: " + ticketModel.getCreatedAt());
+
+
+        tokenNumber.setText("Ticket #:   " + ticketModel.getTokenNo() + " | Date: " + CommonUtils.getCorrectDateFromTimeStamp(ticketModel.getCreatedAt()));
         title.setText(ticketModel.getSubject());
         description.setText(ticketModel.getDescription());
     }
+
 
 }

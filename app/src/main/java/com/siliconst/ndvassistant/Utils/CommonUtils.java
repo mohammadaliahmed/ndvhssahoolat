@@ -111,6 +111,15 @@ public class CommonUtils {
         return dp * context.getResources().getDisplayMetrics().density;
     }
 
+    public static String getCorrectDateFromTimeStamp(String date) {
+       String[] newDate=date.split(" ")[0].split("-");
+
+       String year=newDate[0];
+       String month=newDate[1];
+       String day=newDate[2];
+       return  day+"-"+month+"-"+year;
+    }
+
     public static String getRealPathFromURI(Uri contentUri) {
         String res = null;
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -136,7 +145,7 @@ public class CommonUtils {
         return vId;
     }
 
-    public static String getFileNameFromUri(Context context,Uri uri) {
+    public static String getFileNameFromUri(Context context, Uri uri) {
         Cursor c = context.getContentResolver().query(uri, null, null, null, null);
         c.moveToFirst();
         return c.getString(c.getColumnIndex(OpenableColumns.DISPLAY_NAME));
