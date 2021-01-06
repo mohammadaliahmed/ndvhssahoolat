@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     TextView name, email, phone, address;
 
     CardView profile;
-    TextView noticeBoard;
+    ImageView noticeBoard;
     CircleImageView image;
 
 
@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         address = findViewById(R.id.address);
         recycler = findViewById(R.id.recycler);
         seeAll.setPaintFlags(seeAll.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        noticeBoard.setPaintFlags(seeAll.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         name.setText(SharedPrefs.getUser().getName());
         phone.setText(SharedPrefs.getUser().getPhone());
         email.setText(SharedPrefs.getUser().getEmail());
