@@ -53,11 +53,12 @@ public class CreateTicket extends AppCompatActivity {
     RelativeLayout wholeLayout;
     Button submit;
     EditText description, title;
-    Spinner departmentSpinner;
+    Spinner departmentSpinner, prioritySpinner;
     private Integer departmentChosenId = 0;
     private List<Department> departmentList = new ArrayList<>();
     private String liveFileUrl;
     private String imageUrl;
+    private String priorityChosen;
 
 
     @Override
@@ -73,6 +74,7 @@ public class CreateTicket extends AppCompatActivity {
 
         wholeLayout = findViewById(R.id.wholeLayout);
         description = findViewById(R.id.description);
+        prioritySpinner = findViewById(R.id.prioritySpinner);
         title = findViewById(R.id.title);
         submit = findViewById(R.id.submit);
         departmentSpinner = findViewById(R.id.departmentSpinner);
@@ -103,11 +105,14 @@ public class CreateTicket extends AppCompatActivity {
                     description.setError("Please explain problem");
                 } else if (departmentChosenId == 0) {
                     CommonUtils.showToast("Please select department");
+                } else if (priorityChosen.equalsIgnoreCase("Choose priority")) {
+                    CommonUtils.showToast("Please choose priority");
                 } else {
                     showAlert();
                 }
             }
         });
+        setupPrioritySpinner();
     }
 
     private void showAlert() {
@@ -120,9 +125,9 @@ public class CreateTicket extends AppCompatActivity {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
-                        if(mSelected.size()>0){
+                        if (mSelected.size() > 0) {
                             uploadImage(imageUrl);
-                        }else{
+                        } else {
                             submitTicketToServer();
                         }
 
@@ -146,6 +151,7 @@ public class CreateTicket extends AppCompatActivity {
         map.addProperty("api_password", AppConfig.API_PASSOWRD);
         map.addProperty("id", SharedPrefs.getUser().getId());
         map.addProperty("department_id", departmentChosenId);
+        map.addProperty("priority", priorityChosen);
         map.addProperty("title", title.getText().toString());
         map.addProperty("description", description.getText().toString());
         if (liveFileUrl != null) {
@@ -160,7 +166,7 @@ public class CreateTicket extends AppCompatActivity {
                 wholeLayout.setVisibility(View.GONE);
 
                 if (response.code() == 200) {
-                   showDoneAlert();
+                    showDoneAlert();
 
                 }
             }
@@ -208,7 +214,7 @@ public class CreateTicket extends AppCompatActivity {
                     try {
 
                         String url = response.body().string();
-                        liveFileUrl=url;
+                        liveFileUrl = url;
                         submitTicketToServer();
 
                     } catch (IOException e) {
@@ -225,6 +231,7 @@ public class CreateTicket extends AppCompatActivity {
             }
         });
     }
+
     private void getDepartmentsFromSpinner() {
         UserClient getResponse = AppConfig.getRetrofit().create(UserClient.class);
 
@@ -292,14 +299,42 @@ public class CreateTicket extends AppCompatActivity {
         });
     }
 
+    private void setupPrioritySpinner() {
+        List<String> list = new ArrayList<>();
+        list.add("Choose priority");
+        list.add("low");
+        list.add("medium");
+        list.add("high");
+
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        prioritySpinner.setAdapter(dataAdapter);
+        prioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                gridViewAdapter.getFilter().filter(list.get(position));
+                priorityChosen = list.get(position);
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
             mSelected = data.getStringArrayListExtra(Pix.IMAGE_RESULTS);
             Glide.with(CreateTicket.this).load(mSelected.get(0)).into(pickImage);
-            CompressImage compressImage=new CompressImage(this);
-            imageUrl=compressImage.compressImage(mSelected.get(0));
+            CompressImage compressImage = new CompressImage(this);
+            imageUrl = compressImage.compressImage(mSelected.get(0));
 
         }
 
