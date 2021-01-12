@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class User  {
+public class User {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -45,6 +45,9 @@ public class User  {
     @SerializedName("block")
     @Expose
     private String block;
+    @SerializedName("active")
+    @Expose
+    private String active;
     @SerializedName("phone")
     @Expose
     private String phone;
@@ -54,6 +57,14 @@ public class User  {
     @SerializedName("fcmKey")
     @Expose
     private String fcmKey;
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
 
     public Integer getId() {
         return id;

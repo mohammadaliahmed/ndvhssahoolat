@@ -11,8 +11,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +36,8 @@ import com.siliconst.ndvassistant.Utils.SharedPrefs;
 import com.siliconst.ndvassistant.Utils.UserClient;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -52,6 +57,8 @@ public class SeeAllTickets extends AppCompatActivity {
     ImageView createTicket;
     ImageView search;
     ImageView profile;
+    Spinner sortSpinner;
+    private String sortChosen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +69,7 @@ public class SeeAllTickets extends AppCompatActivity {
         back = findViewById(R.id.back);
         search = findViewById(R.id.search);
         profile = findViewById(R.id.profile);
+        sortSpinner = findViewById(R.id.sortSpinner);
         departmentRecycler = findViewById(R.id.departmentRecycler);
         departmentsListAdapter = new DepartmentsListAdapter(this, departmentList, new DepartmentsListAdapter.DepartmentListAdapterCallbacks() {
             @Override
@@ -105,7 +113,7 @@ public class SeeAllTickets extends AppCompatActivity {
             }
         });
         getDepartmentsFromSpinner();
-
+        setupPrioritySpinner();
     }
 
     private void showSearchDialog() {
@@ -176,6 +184,72 @@ public class SeeAllTickets extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void setupPrioritySpinner() {
+        List<String> list = new ArrayList<>();
+        list.add("Date Added");
+        list.add("Priority");
+        list.add("Status");
+
+
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_spinner_item, list);
+//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        ArrayAdapter dataAdapter=ArrayAdapter.createFromResource(this,R.array.sort_list,R.layout.color_spinner_item);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
+        sortSpinner.setAdapter(dataAdapter);
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                gridViewAdapter.getFilter().filter(list.get(position));
+                sortChosen = list.get(position);
+                if (sortChosen.toLowerCase().contains("date")) {
+                    Collections.sort(ticketList, new Comparator<Ticket>() {
+                        @Override
+                        public int compare(Ticket listData, Ticket t1) {
+                            String ob1 = listData.getCreatedAt();
+                            String ob2 = t1.getCreatedAt();
+                            return ob2.compareTo(ob1);
+
+                        }
+                    });
+                    homeTicketsAdapter.updateList(ticketList);
+                } else if (sortChosen.toLowerCase().contains("priority")) {
+                    Collections.sort(ticketList, new Comparator<Ticket>() {
+                        @Override
+                        public int compare(Ticket listData, Ticket t1) {
+                            String ob1 = listData.getPriority();
+                            String ob2 = t1.getPriority();
+                            return ob2.compareTo(ob1);
+
+                        }
+                    });
+                    homeTicketsAdapter.updateList(ticketList);
+                } else if (sortChosen.toLowerCase().contains("status")) {
+                    Collections.sort(ticketList, new Comparator<Ticket>() {
+                        @Override
+                        public int compare(Ticket listData, Ticket t1) {
+                            String ob1 = listData.getStatus();
+                            String ob2 = t1.getStatus();
+                            return ob1.compareTo(ob2);
+
+                        }
+                    });
+                    homeTicketsAdapter.updateList(ticketList);
+
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });

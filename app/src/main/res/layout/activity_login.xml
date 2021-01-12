@@ -12,11 +12,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:text="Welcome Back"
 
 
@@ -34,7 +35,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phone"
@@ -49,7 +51,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginTop="-10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:text="0/11"
@@ -58,7 +59,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -86,7 +88,6 @@
             android:layout_height="35dp"
             android:layout_margin="10dp"
             android:background="@drawable/btn_bg"
-            android:inputType="text"
             android:text="Login"
             android:textColor="#fff" />
 
@@ -96,8 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_margin="10dp"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
+
             android:padding="5dp"
             android:text="Dont have an account? Register now" />
 
@@ -117,5 +117,12 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_ndv_logo" />
 
 </RelativeLayout>

@@ -17,7 +17,6 @@
             android:layout_height="100dp"
             android:layout_gravity="center"
 
-            android:layout_margin="10dp"
             android:clickable="true"
 
             android:foreground="?android:attr/selectableItemBackground"
@@ -42,6 +41,7 @@
 
 
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -65,7 +65,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/title"
@@ -76,13 +77,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <EditText
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/grey_corners"
-            android:id="@+id/description"
             android:gravity="top"
             android:hint="Description"
+            android:inputType="textCapSentences|textMultiLine"
             android:maxHeight="150dp"
             android:minHeight="100dp"
             android:padding="5dp"

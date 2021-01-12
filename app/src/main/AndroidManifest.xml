@@ -57,6 +57,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.EditProfile"
             android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activities.ForgotPassword" />
 
 
         <service android:name="com.siliconst.ndvassistant.Utils.MyFirebaseMessagingService">

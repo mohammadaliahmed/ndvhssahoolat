@@ -166,6 +166,13 @@ public interface UserClient {
     );
 
     @Headers("Content-Type: application/json")
+    @POST("api/user/resetpassword")
+    Call<ApiResponse> resetpassword(
+            @Body JsonObject jsonObject
+
+    );
+
+    @Headers("Content-Type: application/json")
     @POST("api/user/updateProfile")
     Call<ApiResponse> updateProfile(
             @Body JsonObject jsonObject

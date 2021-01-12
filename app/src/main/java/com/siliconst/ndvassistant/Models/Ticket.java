@@ -26,7 +26,7 @@ public class Ticket implements Serializable {
     private String description;
     @SerializedName("priority")
     @Expose
-    private Object priority;
+    private String priority;
     @SerializedName("status")
     @Expose
     private String status;
@@ -102,11 +102,11 @@ public class Ticket implements Serializable {
         this.description = description;
     }
 
-    public Object getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(Object priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 

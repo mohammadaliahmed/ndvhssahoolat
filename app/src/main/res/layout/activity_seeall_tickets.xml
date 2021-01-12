@@ -161,13 +161,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
-                    android:text="SORT BY"
+                    android:text="SORT BY: "
                     android:textColor="#fff"
                     android:textSize="12sp" />
 
                 <Spinner
                     android:id="@+id/sortSpinner"
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:backgroundTint="@color/colorWhite" />

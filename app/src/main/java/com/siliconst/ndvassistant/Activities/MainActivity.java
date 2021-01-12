@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         phone.setText(SharedPrefs.getUser().getPhone());
         email.setText(SharedPrefs.getUser().getEmail());
         address.setText("House # " + SharedPrefs.getUser().getHousenumber() + "," + SharedPrefs.getUser().getBlock());
-        Glide.with(this).load(AppConfig.BASE_URL_Image+SharedPrefs.getUser().getAvatar()).placeholder(R.drawable.ic_profile).into(image);
+        Glide.with(this).load(AppConfig.BASE_URL_Image + SharedPrefs.getUser().getAvatar()).placeholder(R.drawable.ic_profile).into(image);
         seeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,7 +225,17 @@ public class MainActivity extends AppCompatActivity {
 
                     if (object != null && object.getUser() != null) {
                         User user = object.getUser();
-                        SharedPrefs.setUser(user);
+                        if (user.getActive().equalsIgnoreCase("true")) {
+
+                            SharedPrefs.setUser(user);
+                        } else {
+                            CommonUtils.showToast("Your account is not active");
+                            SharedPrefs.logout();
+                            Intent intent = new Intent(MainActivity.this, Splash.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
 
                 } else {

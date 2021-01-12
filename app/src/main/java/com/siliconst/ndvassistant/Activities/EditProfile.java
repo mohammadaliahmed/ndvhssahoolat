@@ -54,7 +54,7 @@ public class EditProfile extends AppCompatActivity {
     EditText name, phone, houseNumber, email, username;
     Spinner blockSpinner;
     RadioButton male, female;
-    Button update;
+    Button update,logout;
     TextView characters;
     String gender;
     private String blockChosen;
@@ -76,6 +76,7 @@ public class EditProfile extends AppCompatActivity {
         this.setTitle("Edit Profile");
 
 
+        logout = findViewById(R.id.logout);
         wholeLayout = findViewById(R.id.wholeLayout);
         characters = findViewById(R.id.characters);
         name = findViewById(R.id.name);
@@ -89,6 +90,16 @@ public class EditProfile extends AppCompatActivity {
         update = findViewById(R.id.update);
         image = findViewById(R.id.image);
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPrefs.logout();
+                Intent intent = new Intent(EditProfile.this, Splash.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

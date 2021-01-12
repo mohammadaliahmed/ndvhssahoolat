@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.siliconst.ndvassistant.Activities.UserManagement.LoginActivity;
 import com.siliconst.ndvassistant.R;
+import com.siliconst.ndvassistant.Utils.CommonUtils;
 import com.siliconst.ndvassistant.Utils.SharedPrefs;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,8 +33,12 @@ public class Splash extends AppCompatActivity {
                 // This method will be executed once the timer is over
                 // Start your app main activity
                 if (SharedPrefs.getUser() != null) {
-                    Intent i = new Intent(Splash.this, MainActivity.class);
-                    startActivity(i);
+                    if(SharedPrefs.getUser().getActive().equalsIgnoreCase("true")) {
+                        Intent i = new Intent(Splash.this, MainActivity.class);
+                        startActivity(i);
+                    }else {
+                        CommonUtils.showToast("You account is not active");
+                    }
                 } else {
                     Intent i = new Intent(Splash.this, LoginActivity.class);
                     startActivity(i);

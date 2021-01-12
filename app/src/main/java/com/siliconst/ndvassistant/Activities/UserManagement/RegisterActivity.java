@@ -3,7 +3,10 @@ package com.siliconst.ndvassistant.Activities.UserManagement;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,6 +31,7 @@ import com.siliconst.ndvassistant.Utils.UserClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -99,6 +103,11 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
+
+    }
+    private String getColoredSpanned(String text, String color) {
+        String input = "<font color=" + color + ">" + text + "</font>";
+        return input;
     }
 
     private void singupNow() {

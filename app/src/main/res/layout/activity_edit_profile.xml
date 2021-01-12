@@ -19,10 +19,10 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image"
                 android:layout_width="80dp"
-                android:scaleType="centerCrop"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_profile" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -174,18 +174,28 @@
                     android:hint="Username"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/update"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/btn_bg"
+                android:text="Update"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/btn_bg_red"
+                android:text="Logout"
+                android:textColor="#fff" />
         </LinearLayout>
     </ScrollView>
 
-
-    <Button
-        android:id="@+id/update"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/btn_bg"
-        android:text="Update"
-        android:textColor="#fff" />
 
     <RelativeLayout
         android:id="@+id/wholeLayout"
