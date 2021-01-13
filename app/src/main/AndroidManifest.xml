@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.siliconst.ndvassistant">
+    package="com.siliconst.ndvhssahoolat">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name="com.siliconst.ndvassistant.Utils.ApplicationClass"
+        android:name="com.siliconst.ndvhssahoolat.Utils.ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,7 +23,7 @@
 
 
         <activity
-            android:name="com.siliconst.ndvassistant.Activities.Splash"
+            android:name="com.siliconst.ndvhssahoolat.Activities.Splash"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,35 +32,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.MainActivity"
+            android:name="com.siliconst.ndvhssahoolat.Activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.UserManagement.LoginActivity"
+            android:name="com.siliconst.ndvhssahoolat.Activities.UserManagement.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.UserManagement.RegisterActivity"
+            android:name="com.siliconst.ndvhssahoolat.Activities.UserManagement.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.CreateTicket"
+            android:name="com.siliconst.ndvhssahoolat.Activities.CreateTicket"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Activities.SeeAllTickets"
+            android:name="com.siliconst.ndvhssahoolat.Activities.SeeAllTickets"
             android:theme="@style/AppThemeBlue.NoActionBar" />
         <activity
-            android:name=".Activities.NoticeBoards"
+            android:name="com.siliconst.ndvhssahoolat.Activities.NoticeBoards"
             android:theme="@style/AppThemeBlue.NoActionBar" />
         <activity
-            android:name=".Activities.ListOfRepliesToTicket"
+            android:name="com.siliconst.ndvhssahoolat.Activities.ListOfRepliesToTicket"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.ShowImage"
+            android:name="com.siliconst.ndvhssahoolat.Activities.ShowImage"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.EditProfile"
+        <activity android:name="com.siliconst.ndvhssahoolat.Activities.EditProfile"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".Activities.ForgotPassword" />
+        <activity android:name="com.siliconst.ndvhssahoolat.Activities.ForgotPassword" />
 
 
-        <service android:name="com.siliconst.ndvassistant.Utils.MyFirebaseMessagingService">
+        <service android:name="com.siliconst.ndvhssahoolat.Utils.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

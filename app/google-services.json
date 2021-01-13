@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "355087823038",
-    "project_id": "ndvassistant",
-    "storage_bucket": "ndvassistant.appspot.com"
+    "project_number": "899881774712",
+    "project_id": "ndvhssahoolat",
+    "storage_bucket": "ndvhssahoolat.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:355087823038:android:4f0d5d59f6294529126eef",
+        "mobilesdk_app_id": "1:899881774712:android:4115d2687dd23149ae878d",
         "android_client_info": {
-          "package_name": "com.siliconst.ndvassistant"
+          "package_name": "com.siliconst.ndvhssahoolat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "355087823038-svm9nalga8njf3vce8mv77qcr26rpq48.apps.googleusercontent.com",
+          "client_id": "899881774712-jg3ll78jpanibb0mct6p3iki3auvgpit.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDeWYvH_KuJfKieTOB_BSUjcs_eJPshbG4"
+          "current_key": "AIzaSyBmg9oOHwH51u6exoy0bmRwSRJ3aWYAG64"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "355087823038-svm9nalga8njf3vce8mv77qcr26rpq48.apps.googleusercontent.com",
+              "client_id": "899881774712-jg3ll78jpanibb0mct6p3iki3auvgpit.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
