@@ -1,6 +1,8 @@
 package com.siliconst.ndvhssahoolat.Activities;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,6 +26,7 @@ import com.siliconst.ndvhssahoolat.Models.Department;
 import com.siliconst.ndvhssahoolat.NetworkResponses.ApiResponse;
 import com.siliconst.ndvhssahoolat.R;
 import com.siliconst.ndvhssahoolat.Utils.AppConfig;
+import com.siliconst.ndvhssahoolat.Utils.ApplicationClass;
 import com.siliconst.ndvhssahoolat.Utils.CommonUtils;
 import com.siliconst.ndvhssahoolat.Utils.CompressImage;
 import com.siliconst.ndvhssahoolat.Utils.SharedPrefs;
@@ -49,13 +52,13 @@ public class CreateTicket extends AppCompatActivity {
     private ArrayList<String> mSelected = new ArrayList<>();
     RelativeLayout wholeLayout;
     Button submit;
-    EditText description, title;
+    public static EditText description, title;
     Spinner departmentSpinner, prioritySpinner;
-    private Integer departmentChosenId = 0;
+    public static Integer departmentChosenId = 0;
     private List<Department> departmentList = new ArrayList<>();
     private String liveFileUrl;
-    private String imageUrl;
-    private String priorityChosen;
+    public static  String imageUrl;
+    public static String priorityChosen;
 
 
     @Override
@@ -122,11 +125,14 @@ public class CreateTicket extends AppCompatActivity {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
-                        if (mSelected.size() > 0) {
-                            uploadImage(imageUrl);
-                        } else {
-                            submitTicketToServer();
-                        }
+                        startServiceNow();
+                        showDoneAlert();
+//                        if (mSelected.size() > 0) {
+//                            startServiceNow();
+//                            uploadImage(imageUrl);
+//                        } else {
+//                            submitTicketToServer();
+//                        }
 
                     }
                 }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -136,6 +142,35 @@ public class CreateTicket extends AppCompatActivity {
             }
         })
                 .show();
+    }
+
+
+    private void startServiceNow() {
+        stopServiceNow();
+        boolean isClipboardServiceRunning = isMyServiceRunning(UploadPostService.class);
+
+        if (!isClipboardServiceRunning) {
+            Intent svc = new Intent(CreateTicket.this, UploadPostService.class);
+
+            startService(svc);
+        } else {
+//            CommonUtils.showToast("Service running");
+
+        }
+
+    }
+
+    private void stopServiceNow() {
+        boolean isClipboardServiceRunning = isMyServiceRunning(UploadPostService.class);
+
+        if (isClipboardServiceRunning) {
+            stopService(new Intent(getApplicationContext(), UploadPostService.class));
+
+        } else {
+//            CommonUtils.showToast("Service not running running");
+        }
+
+
     }
 
     private void submitTicketToServer() {
@@ -354,4 +389,15 @@ public class CreateTicket extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public static boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) ApplicationClass.getInstance().getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
