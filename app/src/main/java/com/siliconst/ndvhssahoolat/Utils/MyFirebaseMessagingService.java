@@ -110,7 +110,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         } else if (type.equalsIgnoreCase("notification")) {
             resultIntent = new Intent(this, MainActivity.class);
-            resultIntent.putExtra("notification","notification");
+            resultIntent.putExtra("notification", "notification");
             NotificationModel model = new NotificationModel(title, message);
             SharedPrefs.setNotification(model);
 
@@ -136,9 +136,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentIntent(resultPendingIntent);
 
         mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        int importance = NotificationManager.IMPORTANCE_HIGH;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.WHITE);

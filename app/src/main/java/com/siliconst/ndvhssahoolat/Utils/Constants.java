@@ -39,7 +39,7 @@ public class Constants {
     public static boolean IS_HOME_LOADED = false;
     public static String LOCATION = "";
     public static boolean My_ADS = false;
-    public static boolean POSTS_FRAGMENT = false;
+    public static boolean HOME_FRAGMENT = false;
 
 
 

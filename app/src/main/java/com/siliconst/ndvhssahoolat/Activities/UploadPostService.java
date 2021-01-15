@@ -71,9 +71,9 @@ public class UploadPostService extends Service {
                 .setContentIntent(resultPendingIntent);
 
         mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        int importance = NotificationManager.IMPORTANCE_NONE;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
 //            notificationChannel.enableLights(true);
 //            notificationChannel.setLightColor(Color.RED);
@@ -87,9 +87,9 @@ public class UploadPostService extends Service {
 //        mNotificationManager.notify(num /* Request Code */, mBuilder.build());
         Notification notification = mBuilder.build();
         startForeground(101, notification);
-        if(CreateTicket.imageUrl==null){
+        if (CreateTicket.imageUrl == null) {
             submitTicketToServer();
-        }else {
+        } else {
             uploadFile(CreateTicket.imageUrl);
         }
 
@@ -136,6 +136,7 @@ public class UploadPostService extends Service {
         });
 
     }
+
     private void submitTicketToServer() {
 
         UserClient getResponse = AppConfig.getRetrofit().create(UserClient.class);

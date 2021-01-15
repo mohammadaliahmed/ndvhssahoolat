@@ -56,14 +56,12 @@
         android:layout_marginRight="10dp"
         android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingTop="50dp"
-        android:weightSum="2">
+        android:paddingTop="50dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
 
-            android:layout_weight="0.8"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -118,10 +116,10 @@
                     android:background="@drawable/blue_bg_rounded_dark">
 
                     <ImageView
+                        android:id="@+id/createTicket"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:clickable="true"
-                        android:id="@+id/createTicket"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:src="@drawable/ic_add_dark" />
 
@@ -183,8 +181,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.2"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
