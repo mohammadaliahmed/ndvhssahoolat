@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 
+import com.siliconst.ndvhssahoolat.Activities.StaffManagement.StaffDashboard;
 import com.siliconst.ndvhssahoolat.Activities.UserManagement.LoginActivity;
 import com.siliconst.ndvhssahoolat.R;
 import com.siliconst.ndvhssahoolat.Utils.CommonUtils;
@@ -32,10 +33,16 @@ public class Splash extends AppCompatActivity {
                 // This method will be executed once the timer is over
                 // Start your app main activity
                 if (SharedPrefs.getUser() != null) {
-                    if(SharedPrefs.getUser().getActive().equalsIgnoreCase("true")) {
-                        Intent i = new Intent(Splash.this, MainActivity.class);
-                        startActivity(i);
-                    }else {
+                    if (SharedPrefs.getUser().getActive().equalsIgnoreCase("true")) {
+                        if (SharedPrefs.getUser().getRole().equalsIgnoreCase("staff")) {
+                            Intent i = new Intent(Splash.this, StaffDashboard.class);
+                            startActivity(i);
+                        } else if (SharedPrefs.getUser().getRole().equalsIgnoreCase("client")) {
+                            Intent i = new Intent(Splash.this, MainActivity.class);
+                            startActivity(i);
+                        }
+
+                    } else {
                         CommonUtils.showToast("You account is not active");
                     }
                 } else {

@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.JsonObject;
 import com.siliconst.ndvhssahoolat.Adapters.NoticesAdapter;
+import com.siliconst.ndvhssahoolat.Models.Department;
+import com.siliconst.ndvhssahoolat.Models.FaqsModel;
 import com.siliconst.ndvhssahoolat.Models.Notice;
 import com.siliconst.ndvhssahoolat.NetworkResponses.ApiResponse;
 import com.siliconst.ndvhssahoolat.R;
@@ -19,6 +23,7 @@ import com.siliconst.ndvhssahoolat.Utils.CommonUtils;
 import com.siliconst.ndvhssahoolat.Utils.UserClient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,28 +32,31 @@ import retrofit2.Response;
 
 public class FAQsFragment extends Fragment {
     private View rootView;
+    private List<Department> departmentList = new ArrayList<>();
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    public static HashMap<Integer, List<FaqsModel>> faqMap = new HashMap<>();
 
-    RecyclerView recycler;
-    NoticesAdapter adapter;
-    private List<Notice> itemList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.faq_fragment, container, false);
-        recycler = rootView.findViewById(R.id.recycler);
-
-//        adapter = new NoticesAdapter(getContext(), itemList);
-//        recycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-//        recycler.setAdapter(adapter);
 
 
-//        getDataFromServer();
+        getDataFromServer();
+
+        viewPager = rootView.findViewById(R.id.viewpager);
+
+
+        // Give the TabLayout the ViewPager
+        tabLayout = rootView.findViewById(R.id.sliding_tabs);
         return rootView;
 
     }
 
     private void getDataFromServer() {
+
         UserClient getResponse = AppConfig.getRetrofit().create(UserClient.class);
 
         JsonObject map = new JsonObject();
@@ -56,13 +64,37 @@ public class FAQsFragment extends Fragment {
         map.addProperty("api_password", AppConfig.API_PASSOWRD);
 
 
-        Call<ApiResponse> call = getResponse.notices(map);
+        Call<ApiResponse> call = getResponse.appFaqs(map);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.code() == 200) {
-                    if (response.body().getNotices() != null) {
-                        adapter.setItemList(response.body().getNotices());
+                    if (response.body() != null) {
+                        if (response.body().getCode() == 200) {
+                            if (response.body().getFaqs() != null) {
+                                faqMap = new HashMap<>();
+                                departmentList.clear();
+                                for (FaqsModel model : response.body().getFaqs()) {
+                                    if (faqMap.containsKey(model.getDepartment_id())) {
+                                        List<FaqsModel> list = faqMap.get(model.getDepartment_id());
+                                        list.add(model);
+                                        faqMap.put(model.getDepartment_id(), list);
+                                    } else {
+                                        List<FaqsModel> list = new ArrayList<>();
+                                        list.add(model);
+                                        faqMap.put(model.getDepartment_id(), list);
+                                        departmentList.add(new Department(model.getDepartment_id(), model.getDepartment_name()));
+
+                                    }
+                                }
+
+
+                                setupTabs();
+
+                            }
+                        } else {
+                            CommonUtils.showToast(response.body().getMessage());
+                        }
                     }
                 } else {
                     CommonUtils.showToast(response.message());
@@ -76,4 +108,13 @@ public class FAQsFragment extends Fragment {
         });
 
     }
+
+    private void setupTabs() {
+        SimpleFragmentPagerAdapter adapter = new SimpleFragmentPagerAdapter(getContext(), getChildFragmentManager(), departmentList);
+
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+    }
+
 }

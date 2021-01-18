@@ -57,7 +57,7 @@ public class CreateTicket extends AppCompatActivity {
     public static Integer departmentChosenId = 0;
     private List<Department> departmentList = new ArrayList<>();
     private String liveFileUrl;
-    public static  String imageUrl;
+    public static String imageUrl;
     public static String priorityChosen;
 
 
@@ -116,11 +116,10 @@ public class CreateTicket extends AppCompatActivity {
     }
 
     private void showAlert() {
-        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Are you sure?")
+        new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
                 .setContentText("Create ticket?")
-                .setConfirmText("Yes,create it!")
-                .setCancelText("Cancel")
+                .setConfirmText("Yes")
+                .setCancelText("No")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {

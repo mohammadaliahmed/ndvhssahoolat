@@ -45,6 +45,17 @@ public class Ticket implements Serializable {
     @SerializedName("staff")
     @Expose
     private User staff;
+    @SerializedName("user")
+    @Expose
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public User getStaff() {
         return staff;

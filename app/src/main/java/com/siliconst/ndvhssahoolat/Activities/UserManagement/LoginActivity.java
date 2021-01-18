@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.JsonObject;
 import com.siliconst.ndvhssahoolat.Activities.ForgotPassword;
 import com.siliconst.ndvhssahoolat.Activities.MainActivity;
+import com.siliconst.ndvhssahoolat.Activities.StaffManagement.StaffDashboard;
 import com.siliconst.ndvhssahoolat.NetworkResponses.ApiResponse;
 import com.siliconst.ndvhssahoolat.R;
 import com.siliconst.ndvhssahoolat.Utils.AppConfig;
@@ -131,10 +132,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     if (response.body().getCode() == 200) {
                         if (response.body().getUser().getActive().equalsIgnoreCase("true")) {
+                            Intent i = null;
+
+                            if (response.body().getUser().getRole().equalsIgnoreCase("staff")) {
+                               i= new Intent(LoginActivity.this, StaffDashboard.class);
+                            } else if (response.body().getUser().getRole().equalsIgnoreCase("client")) {
+                                i=new Intent(LoginActivity.this, MainActivity.class);
+                            }
 
                             CommonUtils.showToast("Successfully Logged in");
                             SharedPrefs.setUser(response.body().getUser());
-                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();

@@ -217,5 +217,15 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        BottomNavigationView mBottomNavigationView = findViewById(R.id.navigation);
+        if (mBottomNavigationView.getSelectedItemId() == R.id.navigation_home) {
+            super.onBackPressed();
+            finish();
+        } else {
+            mBottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        }
+    }
 
 }

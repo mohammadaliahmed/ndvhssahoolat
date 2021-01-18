@@ -1,6 +1,7 @@
 package com.siliconst.ndvhssahoolat.NetworkResponses;
 
 import com.siliconst.ndvhssahoolat.Models.Department;
+import com.siliconst.ndvhssahoolat.Models.FaqsModel;
 import com.siliconst.ndvhssahoolat.Models.Notice;
 import com.siliconst.ndvhssahoolat.Models.Reply;
 import com.siliconst.ndvhssahoolat.Models.Ticket;
@@ -36,6 +37,18 @@ public class ApiResponse {
     @SerializedName("replies")
     @Expose
     private List<Reply> replies = null;
+    @SerializedName("faqs")
+    @Expose
+    private List<FaqsModel> faqs = null;
+
+
+    public List<FaqsModel> getFaqs() {
+        return faqs;
+    }
+
+    public void setFaqs(List<FaqsModel> faqs) {
+        this.faqs = faqs;
+    }
 
     public Ticket getTicket() {
         return ticket;

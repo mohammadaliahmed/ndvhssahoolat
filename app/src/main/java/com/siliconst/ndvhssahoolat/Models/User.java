@@ -24,7 +24,7 @@ public class User {
     private Object avatar;
     @SerializedName("designation")
     @Expose
-    private Object designation;
+    private String designation;
     @SerializedName("department_id")
     @Expose
     private Object departmentId;
@@ -55,6 +55,17 @@ public class User {
     @SerializedName("fcmKey")
     @Expose
     private String fcmKey;
+    @SerializedName("role")
+    @Expose
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getActive() {
         return active;
@@ -112,11 +123,11 @@ public class User {
         this.avatar = avatar;
     }
 
-    public Object getDesignation() {
+    public String getDesignation() {
         return designation;
     }
 
-    public void setDesignation(Object designation) {
+    public void setDesignation(String designation) {
         this.designation = designation;
     }
 

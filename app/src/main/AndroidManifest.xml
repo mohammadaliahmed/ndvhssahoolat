@@ -57,9 +57,13 @@
         <activity
             android:name="com.siliconst.ndvhssahoolat.Activities.ShowImage"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.siliconst.ndvhssahoolat.Activities.EditProfile"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name="com.siliconst.ndvhssahoolat.Activities.EditProfile"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name="com.siliconst.ndvhssahoolat.Activities.ForgotPassword" />
+        <activity
+            android:name=".Activities.StaffManagement.StaffDashboard"
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
         <service android:name="com.siliconst.ndvhssahoolat.Utils.MyFirebaseMessagingService">
@@ -69,7 +73,8 @@
         </service>
         <service
             android:name=".Activities.UploadPostService"
-            android:enabled="true"/>
+            android:enabled="true" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

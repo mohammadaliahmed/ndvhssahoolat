@@ -39,6 +39,13 @@ public interface UserClient {
     );
 
     @Headers("Content-Type: application/json")
+    @POST("api/staff/assignedTickets")
+    Call<ApiResponse> assignedTickets(
+            @Body JsonObject jsonObject
+
+    );
+
+    @Headers("Content-Type: application/json")
     @POST("api/ad/deleteAd")
     Call<ApiResponse> deleteAd(
             @Body JsonObject jsonObject
@@ -154,6 +161,13 @@ public interface UserClient {
     @Headers("Content-Type: application/json")
     @POST("api/ticket/getDepartments")
     Call<ApiResponse> getDepartments(
+            @Body JsonObject jsonObject
+
+    );
+
+    @Headers("Content-Type: application/json")
+    @POST("api/user/appFaqs")
+    Call<ApiResponse> appFaqs(
             @Body JsonObject jsonObject
 
     );
