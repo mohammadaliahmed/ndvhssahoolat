@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
@@ -74,9 +75,10 @@ public class UploadPostService extends Service {
         int importance = NotificationManager.IMPORTANCE_NONE;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NDVHS", importance);
 //            notificationChannel.enableLights(true);
 //            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setSound(null, null);
 //            notificationChannel.enableVibration(true);
 //            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
             assert mNotificationManager != null;

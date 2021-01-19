@@ -34,7 +34,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
     implementation 'com.bogdwellers:pinchtozoom:0.1'
@@ -48,6 +48,10 @@ dependencies {
 
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
     implementation 'com.vincent.filepicker:MultiTypeFilePicker:1.0.8'
+    implementation 'org.simpleframework:simple-xml:2.7.1'
+
+
+
 
 
 }

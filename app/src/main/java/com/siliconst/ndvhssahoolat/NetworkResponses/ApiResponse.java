@@ -40,7 +40,18 @@ public class ApiResponse {
     @SerializedName("faqs")
     @Expose
     private List<FaqsModel> faqs = null;
+    @SerializedName("usercode")
+    @Expose
+    private String usercode = null;
 
+
+    public String getUsercode() {
+        return usercode;
+    }
+
+    public void setUsercode(String usercode) {
+        this.usercode = usercode;
+    }
 
     public List<FaqsModel> getFaqs() {
         return faqs;

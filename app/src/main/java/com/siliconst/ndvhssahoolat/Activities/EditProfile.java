@@ -1,6 +1,8 @@
 package com.siliconst.ndvhssahoolat.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -37,6 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -51,7 +54,7 @@ public class EditProfile extends AppCompatActivity {
     EditText name, phone, houseNumber, email, username;
     Spinner blockSpinner;
     RadioButton male, female;
-    Button update,logout;
+    Button update, logout;
     TextView characters;
     String gender;
     private String blockChosen;
@@ -90,11 +93,8 @@ public class EditProfile extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPrefs.logout();
-                Intent intent = new Intent(EditProfile.this, Splash.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                showALert();
+
             }
         });
         image.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +149,35 @@ public class EditProfile extends AppCompatActivity {
         });
         setupUi();
         initChecks();
+    }
+
+    private void showALert() {
+
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setContentText("Are you sure to logout?")
+                .setConfirmText("Yes")
+                .setCancelText("No")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        SharedPrefs.logout();
+                        Intent intent = new Intent(EditProfile.this, Splash.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+
+
+                    }
+                }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sDialog) {
+                sDialog.cancel();
+            }
+        })
+                .show();
+
+
     }
 
     private void setupUi() {

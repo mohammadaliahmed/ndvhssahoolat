@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,6 +59,9 @@ public class HomeFragment extends Fragment {
     CircleImageView image;
     private View rootView;
     Context context;
+    LinearLayout complainstArea;
+    ProgressBar progress;
+    CardView noDataLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,8 +73,11 @@ public class HomeFragment extends Fragment {
         seeAll = rootView.findViewById(R.id.seeAll);
         createTicket = rootView.findViewById(R.id.createTicket);
         email = rootView.findViewById(R.id.email);
+        complainstArea = rootView.findViewById(R.id.complainstArea);
         phone = rootView.findViewById(R.id.phone);
         address = rootView.findViewById(R.id.address);
+        noDataLayout = rootView.findViewById(R.id.noDataLayout);
+        progress = rootView.findViewById(R.id.progress);
         recycler = rootView.findViewById(R.id.recycler);
         seeAll.setPaintFlags(seeAll.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         name.setText(SharedPrefs.getUser().getName());
@@ -106,13 +114,8 @@ public class HomeFragment extends Fragment {
 //        itemTouchhelper.attachToRecyclerView(recycler);
 
 
-
-
-
-
         return rootView;
     }
-
 
 
     @Override
@@ -122,6 +125,11 @@ public class HomeFragment extends Fragment {
     }
 
     private void getMyTicketsFromServer() {
+        itemList.clear();
+        adapter.updateList(itemList);
+        noDataLayout.setVisibility(View.GONE);
+        complainstArea.setVisibility(View.GONE);
+
         UserClient getResponse = AppConfig.getRetrofit().create(UserClient.class);
 
         JsonObject map = new JsonObject();
@@ -134,9 +142,26 @@ public class HomeFragment extends Fragment {
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                progress.setVisibility(View.GONE);
+                noDataLayout.setVisibility(View.GONE);
+
                 if (response.code() == 200) {
-                    if (response.body().getTickets() != null) {
-                        adapter.updateList(response.body().getTickets());
+                    itemList = response.body().getTickets();
+
+                    if (itemList != null) {
+                        noDataLayout.setVisibility(View.GONE);
+                        if (itemList.size() > 0) {
+                            noDataLayout.setVisibility(View.GONE);
+                            complainstArea.setVisibility(View.VISIBLE);
+                            adapter.updateList(response.body().getTickets());
+                        } else {
+                            noDataLayout.setVisibility(View.VISIBLE);
+                            complainstArea.setVisibility(View.GONE);
+
+                        }
+                    } else {
+                        noDataLayout.setVisibility(View.VISIBLE);
+                        complainstArea.setVisibility(View.GONE);
                     }
                 } else {
                     CommonUtils.showToast(response.message());
@@ -145,7 +170,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-
+                progress.setVisibility(View.GONE);
             }
         });
     }

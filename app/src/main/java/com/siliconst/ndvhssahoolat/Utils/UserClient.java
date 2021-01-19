@@ -1,6 +1,7 @@
 package com.siliconst.ndvhssahoolat.Utils;
 
 
+import com.siliconst.ndvhssahoolat.Models.SmsLoginResponse;
 import com.siliconst.ndvhssahoolat.NetworkResponses.ApiResponse;
 import com.google.gson.JsonObject;
 
@@ -9,10 +10,12 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface UserClient {
 
@@ -185,6 +188,21 @@ public interface UserClient {
             @Body JsonObject jsonObject
 
     );
+
+    @Headers("Content-Type: application/json")
+    @POST("api/user/resetpasswordNow")
+    Call<ApiResponse> resetpasswordNow(
+            @Body JsonObject jsonObject
+
+    );
+
+    @Headers("Content-Type: application/json")
+    @GET("corporate_sms2/api/auth.jsp")
+    Call<ResponseBody> loginSMS(@Query("msisdn") String msisdn, @Query("password") String password);
+
+    @Headers("Content-Type: application/json")
+    @GET("corporate_sms2/api/sendsms.jsp")
+    Call<ResponseBody> sendSMS(@Query("session_id") String session_id, @Query("to") String to, @Query("text") String text, @Query("mask") String mask);
 
     @Headers("Content-Type: application/json")
     @POST("api/user/updateProfile")

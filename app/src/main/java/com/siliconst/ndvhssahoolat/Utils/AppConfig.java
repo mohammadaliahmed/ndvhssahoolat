@@ -1,14 +1,17 @@
 package com.siliconst.ndvhssahoolat.Utils;
 
+import com.siliconst.ndvhssahoolat.NetworkResponses.retrofit.SimpleXmlConverterFactory;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AppConfig {
-//        public static String LPTOP_ID = "http://192.168.8.102/ticket/public/";//home
-        public static String LPTOP_ID = "http://192.168.100.31/ticket/public/";//office
+            public static String LPTOP_ID = "http://192.168.8.105/ticket/public/";//home
+//    public static String LPTOP_ID = "http://192.168.100.31/ticket/public/";//office
     public static String SERVER_URL = "http://sahoolat.ndvhs.com/";
     public static String SHARE_URL = "http://accessale.com/";
-    public static String BASE_URL = LPTOP_ID;
+    public static String SMS_URL = "https://telenorcsms.com.pk:27677/";
+    public static String BASE_URL = SERVER_URL;
     public static String API_USERNAME = "WF9.FJ8u'FP{c5Pw";
     public static String API_PASSOWRD = "3B~fauh5s93j[FKb";
 
@@ -23,6 +26,15 @@ public class AppConfig {
         return new Retrofit.Builder()
                 .baseUrl(AppConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+    }
+
+
+    public static Retrofit getRetrofit2() {
+        return new Retrofit.Builder()
+                .baseUrl(AppConfig.SMS_URL)
+                .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 
     }
