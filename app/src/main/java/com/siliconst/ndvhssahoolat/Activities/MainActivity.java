@@ -181,11 +181,10 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.code() == 200) {
                     ApiResponse object = response.body();
-
                     if (object != null && object.getUser() != null) {
+                        SharedPrefs.setadminPhone(response.body().getAdmin_phone());
                         User user = object.getUser();
                         if (user.getActive().equalsIgnoreCase("true")) {
-
                             SharedPrefs.setUser(user);
                         } else {
                             CommonUtils.showToast("Your account is not active");

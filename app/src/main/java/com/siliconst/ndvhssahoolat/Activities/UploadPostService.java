@@ -19,6 +19,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
 import com.google.gson.JsonObject;
+import com.siliconst.ndvhssahoolat.Models.Ticket;
 import com.siliconst.ndvhssahoolat.NetworkResponses.ApiResponse;
 import com.siliconst.ndvhssahoolat.R;
 import com.siliconst.ndvhssahoolat.Utils.AppConfig;
@@ -43,6 +44,8 @@ public class UploadPostService extends Service {
     private NotificationCompat.Builder mBuilder;
     int uploadCount = 0;
     private String liveFileUrl;
+    private String sessionId;
+    private Ticket tikcet;
 
     @Nullable
     @Override
@@ -160,7 +163,14 @@ public class UploadPostService extends Service {
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                stopService(new Intent(getApplicationContext(), UploadPostService.class));
+                if (response.body() != null) {
+                    if (response.body().getTicket() != null) {
+                        tikcet = response.body().getTicket();
+                        callAuthApi();
+                    }
+                }
+
+//                stopService(new Intent(getApplicationContext(), UploadPostService.class));
 
 
             }
@@ -173,6 +183,91 @@ public class UploadPostService extends Service {
             }
         });
     }
+
+    private void callAuthApi() {
+        UserClient getResponse = AppConfig.getRetrofit2().create(UserClient.class);
+        Call<ResponseBody> call = getResponse.loginSMS("923453480541", "yahoo123456");
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String res = response.body().string();
+                        res = res.replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><corpsms><command>Auth_request</command><data>", "");
+                        sessionId = res.replace("</data><response>OK</response></corpsms>", "");
+
+                        callcustomerSMSApi();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                CommonUtils.showToast(t.getMessage());
+
+            }
+        });
+
+    }
+
+    private void callcustomerSMSApi() {
+        UserClient getResponse = AppConfig.getRetrofit2().create(UserClient.class);
+        String phons = SharedPrefs.getUser().getPhone();
+        if (phons.startsWith("03")) {
+            phons.replace("03", "923");
+        }
+        String msg = "Your ticket has been submitted. Token: " + tikcet.getTokenNo() + " Date: " + tikcet.getCreatedAt();
+        Call<ResponseBody> call = getResponse.sendSMS(sessionId, phons, msg, "4B Group PK");
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    calladminSMSApi();
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                CommonUtils.showToast(t.getMessage());
+
+            }
+        });
+    }
+
+    private void calladminSMSApi() {
+        UserClient getResponse = AppConfig.getRetrofit2().create(UserClient.class);
+        String phons = SharedPrefs.getadminPhone();
+        if (phons.startsWith("03")) {
+            phons.replace("03", "923");
+        }
+        String msg = "New ticket has been created by " + SharedPrefs.getUser().getName() + " House: " + SharedPrefs.getUser().getHousenumber()
+                + SharedPrefs.getUser().getBlock() + ". Token: " + tikcet.getTokenNo() + " Date: " + tikcet.getCreatedAt();
+
+        Call<ResponseBody> call = getResponse.sendSMS(sessionId, phons, msg, "4B Group PK");
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    stopService(new Intent(getApplicationContext(), UploadPostService.class));
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                CommonUtils.showToast(t.getMessage());
+
+            }
+        });
+    }
+
 
     private void sendMessage() {
         Log.d("sender", "Broadcasting message");

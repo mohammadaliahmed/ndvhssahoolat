@@ -15,15 +15,23 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.JsonObject;
+import com.siliconst.ndvhssahoolat.Activities.MainActivity;
+import com.siliconst.ndvhssahoolat.Activities.Splash;
 import com.siliconst.ndvhssahoolat.Adapters.StaffTicketsAdapter;
 import com.siliconst.ndvhssahoolat.Models.Ticket;
+import com.siliconst.ndvhssahoolat.Models.User;
 import com.siliconst.ndvhssahoolat.NetworkResponses.ApiResponse;
 import com.siliconst.ndvhssahoolat.R;
 import com.siliconst.ndvhssahoolat.Utils.AppConfig;
@@ -79,7 +87,18 @@ public class StaffDashboard extends AppCompatActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycler.setAdapter(adapter);
 
+
         getdataFromServer();
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (task.isComplete()) {
+                    String token = task.getResult().getToken();
+                    updateFcmKey(token);
+
+                }
+            }
+        });
 
 
     }
@@ -190,6 +209,48 @@ public class StaffDashboard extends AppCompatActivity {
                     }
                 } else {
                     CommonUtils.showToast(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void updateFcmKey(String token) {
+        UserClient getResponse = AppConfig.getRetrofit().create(UserClient.class);
+
+        JsonObject map = new JsonObject();
+        map.addProperty("api_username", AppConfig.API_USERNAME);
+        map.addProperty("api_password", AppConfig.API_PASSOWRD);
+        map.addProperty("id", SharedPrefs.getUser().getId());
+        map.addProperty("fcmKey", token);
+
+        Call<ApiResponse> call = getResponse.updateFcmKey(map);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.code() == 200) {
+                    ApiResponse object = response.body();
+                    if (object != null && object.getUser() != null) {
+                        SharedPrefs.setadminPhone(response.body().getAdmin_phone());
+                        User user = object.getUser();
+                        if (user.getActive().equalsIgnoreCase("true")) {
+                            SharedPrefs.setUser(user);
+                        } else {
+                            CommonUtils.showToast("Your account is not active");
+                            SharedPrefs.logout();
+                            Intent intent = new Intent(StaffDashboard.this, Splash.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+
+                } else {
+//                    CommonUtils.showToast(response.message());
                 }
             }
 

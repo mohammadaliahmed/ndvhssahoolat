@@ -37,12 +37,12 @@ public class SharedPrefs {
     }
 
 
-    public static String getadminFcmKey() {
-        return preferenceGetter("adminfcm");
+    public static String getadminPhone() {
+        return preferenceGetter("getadminPhone");
     }
 
-    public static void setadminFcmKey(String username) {
-        preferenceSetter("adminfcm", username);
+    public static void setadminPhone(String username) {
+        preferenceSetter("getadminPhone", username);
     }
 
     public static String getFcmKey() {

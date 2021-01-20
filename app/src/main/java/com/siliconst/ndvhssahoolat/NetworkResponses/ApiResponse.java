@@ -43,7 +43,17 @@ public class ApiResponse {
     @SerializedName("usercode")
     @Expose
     private String usercode = null;
+    @SerializedName("admin_phone")
+    @Expose
+    private String admin_phone = null;
 
+    public String getAdmin_phone() {
+        return admin_phone;
+    }
+
+    public void setAdmin_phone(String admin_phone) {
+        this.admin_phone = admin_phone;
+    }
 
     public String getUsercode() {
         return usercode;

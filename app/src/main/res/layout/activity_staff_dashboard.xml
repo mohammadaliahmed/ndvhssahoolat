@@ -174,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:text="SORT BY: "
+            android:text="SORT TICKETS: "
             android:textColor="#000"
             android:textSize="12sp" />
 
