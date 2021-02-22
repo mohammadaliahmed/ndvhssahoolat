@@ -65,7 +65,7 @@ public class StaffTicketsAdapter extends RecyclerView.Adapter<StaffTicketsAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Ticket ticket = itemList.get(position);
         holder.title.setText(ticket.getSubject());
-        holder.subtitle.setText("Ticket " + ticket.getStatus());
+        holder.subtitle.setText("Ticket Status: " + ticket.getStatus());
         if (ticket.getStatus().equalsIgnoreCase("closed")) {
             holder.ticketStatus.setBackgroundColor(context.getResources().getColor(R.color.colorGreen));
         } else if (ticket.getStatus().equalsIgnoreCase("pending")) {
@@ -73,14 +73,14 @@ public class StaffTicketsAdapter extends RecyclerView.Adapter<StaffTicketsAdapte
             if (ticket.getAssignedTo() != null && ticket.getStaff() != null) {
                 holder.subtitle.setText("Assigned to: " + ticket.getStaff().getName());
             } else {
-                holder.subtitle.setText("Ticket " + ticket.getStatus());
+                holder.subtitle.setText("Ticket Status: " + ticket.getStatus());
             }
         } else if (ticket.getStatus().equalsIgnoreCase("processing")) {
             holder.ticketStatus.setBackgroundColor(context.getResources().getColor(R.color.colorPurple));
             if (ticket.getAssignedTo() != null && ticket.getStaff() != null) {
                 holder.subtitle.setText("Assigned to: " + ticket.getStaff().getName());
             } else {
-                holder.subtitle.setText("Ticket " + ticket.getStatus());
+                holder.subtitle.setText("Ticket Status: " + ticket.getStatus());
             }
         } else {
             holder.ticketStatus.setBackgroundColor(context.getResources().getColor(R.color.colorRed));

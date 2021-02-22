@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "899881774712-0pgi9acb0ut5m8elkoofalvgg0uhe5r5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.siliconst.ndvhssahoolat",
+            "certificate_hash": "d058fc9513f94fa2b944c97686ee73f23fcb162f"
+          }
+        },
+        {
+          "client_id": "899881774712-o825n2i1loui8p917n7l4qs2ssqbig5a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.siliconst.ndvhssahoolat",
+            "certificate_hash": "64532fd6c04b6d805354698bba5fc798493bca15"
+          }
+        },
+        {
           "client_id": "899881774712-jg3ll78jpanibb0mct6p3iki3auvgpit.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +45,13 @@
             {
               "client_id": "899881774712-jg3ll78jpanibb0mct6p3iki3auvgpit.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "899881774712-48n589kbkavqam9bc6bddfgq4e2vg43f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.siliconst.ndvhssahoolat"
+              }
             }
           ]
         }

@@ -125,10 +125,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void getMyTicketsFromServer() {
-        itemList.clear();
-        adapter.updateList(itemList);
-        noDataLayout.setVisibility(View.GONE);
-        complainstArea.setVisibility(View.GONE);
 
         UserClient getResponse = AppConfig.getRetrofit().create(UserClient.class);
 
@@ -142,6 +138,12 @@ public class HomeFragment extends Fragment {
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                itemList.clear();
+                adapter.updateList(itemList);
+                noDataLayout.setVisibility(View.GONE);
+                complainstArea.setVisibility(View.GONE);
+
+
                 progress.setVisibility(View.GONE);
                 noDataLayout.setVisibility(View.GONE);
 
@@ -170,6 +172,11 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
+                itemList.clear();
+                adapter.updateList(itemList);
+                noDataLayout.setVisibility(View.GONE);
+                complainstArea.setVisibility(View.GONE);
+
                 progress.setVisibility(View.GONE);
             }
         });

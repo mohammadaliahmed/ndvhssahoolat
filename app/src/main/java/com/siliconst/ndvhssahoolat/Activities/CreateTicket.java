@@ -98,7 +98,7 @@ public class CreateTicket extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                uploadImage(imageUrl);
                 if (title.getText().length() < 10) {
                     title.setError("Enter detailed title");
                 } else if (description.getText().length() < 15) {

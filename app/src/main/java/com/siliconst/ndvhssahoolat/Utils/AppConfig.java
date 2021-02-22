@@ -16,7 +16,7 @@ public class AppConfig {
     public static String API_PASSOWRD = "3B~fauh5s93j[FKb";
 
     public static String BASE_URL_Image = BASE_URL + "uploads/";
-    public static String BASE_URL_Image_ATTATCHMENTS = BASE_URL + "../storage/app/";
+    public static String BASE_URL_Image_ATTATCHMENTS = BASE_URL + "storage/";
     public static String BASE_URL_AUDIO = BASE_URL + "public/audio/";
     public static String BASE_URL_Videos = BASE_URL + "public/videos/";
     public static String BASE_URL_QR = BASE_URL + "public/qr/";

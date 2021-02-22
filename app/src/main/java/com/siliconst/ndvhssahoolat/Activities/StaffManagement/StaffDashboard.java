@@ -20,16 +20,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.JsonObject;
+import com.siliconst.ndvhssahoolat.Activities.EditProfileStaff;
+import com.siliconst.ndvhssahoolat.Activities.Fragments.SimpleFragmentPagerAdapter;
+import com.siliconst.ndvhssahoolat.Activities.Fragments.TickersFragmentPagerAdapter;
 import com.siliconst.ndvhssahoolat.Activities.MainActivity;
 import com.siliconst.ndvhssahoolat.Activities.Splash;
 import com.siliconst.ndvhssahoolat.Adapters.StaffTicketsAdapter;
+import com.siliconst.ndvhssahoolat.Models.Department;
+import com.siliconst.ndvhssahoolat.Models.FaqsModel;
 import com.siliconst.ndvhssahoolat.Models.Ticket;
 import com.siliconst.ndvhssahoolat.Models.User;
 import com.siliconst.ndvhssahoolat.NetworkResponses.ApiResponse;
@@ -42,6 +49,7 @@ import com.siliconst.ndvhssahoolat.Utils.UserClient;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,9 +63,13 @@ public class StaffDashboard extends AppCompatActivity {
     CircleImageView image;
     RecyclerView recycler;
     StaffTicketsAdapter adapter;
-    private List<Ticket> ticketList = new ArrayList<>();
+    public List<Ticket> ticketList = new ArrayList<>();
     Spinner statusSpinner;
     private String statusChosen;
+    CardView profile;
+    ViewPager viewPager;
+    TabLayout tabLayout;
+    public static HashMap<String, List<Ticket>> ticketsMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +77,19 @@ public class StaffDashboard extends AppCompatActivity {
         setContentView(R.layout.activity_staff_dashboard);
         email = findViewById(R.id.email);
         phone = findViewById(R.id.phone);
-        statusSpinner = findViewById(R.id.statusSpinner);
         image = findViewById(R.id.image);
+
+        viewPager = findViewById(R.id.viewpager);
+
+
+        // Give the TabLayout the ViewPager
+        tabLayout = findViewById(R.id.sliding_tabs);
+
+
         recycler = findViewById(R.id.recycler);
         name = findViewById(R.id.name);
         designation = findViewById(R.id.designation);
+        profile = findViewById(R.id.profile);
 
         name.setText("WELCOME BACK, " + SharedPrefs.getUser().getName());
         phone.setText(SharedPrefs.getUser().getPhone());
@@ -77,28 +97,38 @@ public class StaffDashboard extends AppCompatActivity {
         designation.setText(SharedPrefs.getUser().getDesignation());
         Glide.with(this).load(AppConfig.BASE_URL_Image + SharedPrefs.getUser().getAvatar()).placeholder(R.drawable.ic_profile).into(image);
 
-        recycler = findViewById(R.id.recycler);
-        adapter = new StaffTicketsAdapter(this, ticketList, new StaffTicketsAdapter.StaffTicketsAdapterCallbacks() {
+//        recycler = findViewById(R.id.recycler);
+//        adapter = new StaffTicketsAdapter(this, ticketList, new StaffTicketsAdapter.StaffTicketsAdapterCallbacks() {
+//            @Override
+//            public void onViewTask(Ticket ticket) {
+//                showDialogDetails(ticket);
+//            }
+//        });
+//        recycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+//        recycler.setAdapter(adapter);
+
+
+        profile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onViewTask(Ticket ticket) {
-                showDialogDetails(ticket);
+            public void onClick(View v) {
+                startActivity(new Intent(StaffDashboard.this, EditProfileStaff.class));
             }
         });
-        recycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        recycler.setAdapter(adapter);
 
 
         getdataFromServer();
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-            @Override
-            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                if (task.isComplete()) {
-                    String token = task.getResult().getToken();
-                    updateFcmKey(token);
+        if (SharedPrefs.getUser() != null) {
+            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                @Override
+                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                    if (task.isComplete()) {
+                        String token = task.getResult().getToken();
+                        updateFcmKey(token);
 
+                    }
                 }
-            }
-        });
+            });
+        }
 
 
     }
@@ -117,11 +147,13 @@ public class StaffDashboard extends AppCompatActivity {
         TextView status = layout.findViewById(R.id.status);
         Button close = layout.findViewById(R.id.close);
         Button call = layout.findViewById(R.id.call);
+        Button name = layout.findViewById(R.id.name);
 
         houseNumber.setText(ticket.getUser().getHousenumber());
+        name.setText(ticket.getUser().getName());
         block.setText(ticket.getUser().getBlock());
         phone.setText(ticket.getUser().getPhone());
-        status.setText("Ticket: " + ticket.getStatus());
+        status.setText("Ticket Status: " + ticket.getStatus());
 
         if (ticket.getStatus().equalsIgnoreCase("closed")) {
             status.setBackgroundColor(getResources().getColor(R.color.colorGreen));
@@ -154,39 +186,6 @@ public class StaffDashboard extends AppCompatActivity {
         dialog.show();
     }
 
-    private void setupPrioritySpinner() {
-        List<String> list = new ArrayList<>();
-        list.add("All");
-        list.add("Open");
-        list.add("Pending");
-        list.add("Processing");
-        list.add("Closed");
-        list.add("Resolved");
-
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(dataAdapter);
-
-        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                statusChosen = list.get(position);
-                if (statusChosen.equalsIgnoreCase("all")) {
-                    adapter.filter("");
-                } else {
-                    adapter.filter(statusChosen);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
 
     private void getdataFromServer() {
         UserClient getResponse = AppConfig.getRetrofit().create(UserClient.class);
@@ -204,8 +203,23 @@ public class StaffDashboard extends AppCompatActivity {
                 if (response.code() == 200) {
                     if (response.body().getTickets() != null) {
                         ticketList = response.body().getTickets();
-                        adapter.updateList(response.body().getTickets());
-                        setupPrioritySpinner();
+                        for (Ticket model : ticketList) {
+                            if (ticketsMap.containsKey(model.getId())) {
+                                List<Ticket> list = ticketsMap.get(model.getStatus());
+                                list.add(model);
+                                ticketsMap.put(model.getStatus(), list);
+                            } else {
+                                List<Ticket> list = new ArrayList<>();
+                                list.add(model);
+                                ticketsMap.put(model.getStatus(), list);
+
+                            }
+                        }
+
+
+                        setupTabs();
+//                        adapter.updateList(response.body().getTickets());
+//                        setupPrioritySpinner();
                     }
                 } else {
                     CommonUtils.showToast(response.message());
@@ -217,6 +231,22 @@ public class StaffDashboard extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setupTabs() {
+        List<String> list = new ArrayList<>();
+
+        list.add("Open");
+        list.add("Pending");
+        list.add("Processing");
+        list.add("Closed");
+        list.add("Resolved");
+
+        TickersFragmentPagerAdapter adapter = new TickersFragmentPagerAdapter(this, getSupportFragmentManager(), list);
+
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+
     }
 
     private void updateFcmKey(String token) {

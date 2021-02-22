@@ -77,16 +77,18 @@ public class MainActivity extends AppCompatActivity {
         fragment = new HomeFragment();
         loadFragment(fragment);
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-            @Override
-            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                if (task.isComplete()) {
-                    String token = task.getResult().getToken();
-                    updateFcmKey(token);
+        if (SharedPrefs.getUser() != null) {
+            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                @Override
+                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                    if (task.isComplete()) {
+                        String token = task.getResult().getToken();
+                        updateFcmKey(token);
 
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

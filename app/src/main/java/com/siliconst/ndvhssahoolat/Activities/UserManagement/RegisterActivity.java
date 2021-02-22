@@ -23,6 +23,7 @@ import com.siliconst.ndvhssahoolat.NetworkResponses.ApiResponse;
 import com.siliconst.ndvhssahoolat.R;
 import com.siliconst.ndvhssahoolat.Utils.AppConfig;
 import com.siliconst.ndvhssahoolat.Utils.CommonUtils;
+import com.siliconst.ndvhssahoolat.Utils.KeyboardUtils;
 import com.siliconst.ndvhssahoolat.Utils.SharedPrefs;
 import com.siliconst.ndvhssahoolat.Utils.UserClient;
 
@@ -42,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextView characters;
     String gender;
     private String blockChosen;
-    RelativeLayout wholeLayout;
+    RelativeLayout wholeLayout, asdasdas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         phone = findViewById(R.id.phone);
         houseNumber = findViewById(R.id.houseNumber);
         email = findViewById(R.id.email);
+        asdasdas = findViewById(R.id.asdasdas);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         blockSpinner = findViewById(R.id.blockSpinner);
@@ -99,14 +101,15 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-
     }
+
     private String getColoredSpanned(String text, String color) {
         String input = "<font color=" + color + ">" + text + "</font>";
         return input;
     }
 
     private void singupNow() {
+        KeyboardUtils.forceCloseKeyboard(asdasdas);
         wholeLayout.setVisibility(View.VISIBLE);
         UserClient getResponse = AppConfig.getRetrofit().create(UserClient.class);
 

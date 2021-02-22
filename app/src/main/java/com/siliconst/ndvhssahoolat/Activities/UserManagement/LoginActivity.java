@@ -22,6 +22,7 @@ import com.siliconst.ndvhssahoolat.NetworkResponses.ApiResponse;
 import com.siliconst.ndvhssahoolat.R;
 import com.siliconst.ndvhssahoolat.Utils.AppConfig;
 import com.siliconst.ndvhssahoolat.Utils.CommonUtils;
+import com.siliconst.ndvhssahoolat.Utils.KeyboardUtils;
 import com.siliconst.ndvhssahoolat.Utils.SharedPrefs;
 import com.siliconst.ndvhssahoolat.Utils.UserClient;
 
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView characters;
     RelativeLayout wholeLayout;
     TextView forgotPassword;
+    RelativeLayout sdasdas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword = findViewById(R.id.forgotPassword);
 
         characters = findViewById(R.id.characters);
+        sdasdas = findViewById(R.id.sdasdas);
         wholeLayout = findViewById(R.id.wholeLayout);
         phone = findViewById(R.id.phone);
         password = findViewById(R.id.password);
@@ -116,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginNow() {
+        KeyboardUtils.forceCloseKeyboard(sdasdas);
         wholeLayout.setVisibility(View.VISIBLE);
         UserClient getResponse = AppConfig.getRetrofit().create(UserClient.class);
         JsonObject map = new JsonObject();
