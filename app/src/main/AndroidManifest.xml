@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.siliconst.ndvhssahoolat">
+    package="com.siliconst.sahoolat">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name="com.siliconst.ndvhssahoolat.Utils.ApplicationClass"
+        android:name="com.siliconst.sahoolat.Utils.ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true"
@@ -26,7 +26,7 @@
 
 
         <activity
-            android:name="com.siliconst.ndvhssahoolat.Activities.Splash"
+            android:name="com.siliconst.sahoolat.Activities.Splash"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,46 +35,46 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.siliconst.ndvhssahoolat.Activities.MainActivity"
+            android:name="com.siliconst.sahoolat.Activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.siliconst.ndvhssahoolat.Activities.UserManagement.LoginActivity"
+            android:name="com.siliconst.sahoolat.Activities.UserManagement.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.siliconst.ndvhssahoolat.Activities.UserManagement.RegisterActivity"
+            android:name="com.siliconst.sahoolat.Activities.UserManagement.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.siliconst.ndvhssahoolat.Activities.CreateTicket"
+            android:name="com.siliconst.sahoolat.Activities.CreateTicket"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.siliconst.ndvhssahoolat.Activities.SeeAllTickets"
+            android:name="com.siliconst.sahoolat.Activities.SeeAllTickets"
             android:theme="@style/AppThemeBlue.NoActionBar" />
         <activity
-            android:name="com.siliconst.ndvhssahoolat.Activities.NoticeBoards"
+            android:name="com.siliconst.sahoolat.Activities.NoticeBoards"
             android:theme="@style/AppThemeBlue.NoActionBar" />
         <activity
-            android:name="com.siliconst.ndvhssahoolat.Activities.ListOfRepliesToTicket"
+            android:name="com.siliconst.sahoolat.Activities.ListOfRepliesToTicket"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.siliconst.ndvhssahoolat.Activities.ShowImage"
+            android:name="com.siliconst.sahoolat.Activities.ShowImage"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.siliconst.ndvhssahoolat.Activities.EditProfile"
+            android:name="com.siliconst.sahoolat.Activities.EditProfile"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name="com.siliconst.ndvhssahoolat.Activities.ForgotPassword" />
+        <activity android:name="com.siliconst.sahoolat.Activities.ForgotPassword" />
         <activity
-            android:name=".Activities.StaffManagement.StaffDashboard"
+            android:name="com.siliconst.sahoolat.Activities.StaffManagement.StaffDashboard"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.EditProfileStaff" />
+        <activity android:name="com.siliconst.sahoolat.Activities.EditProfileStaff" />
 
 
-        <service android:name="com.siliconst.ndvhssahoolat.Utils.MyFirebaseMessagingService">
+        <service android:name="com.siliconst.sahoolat.Utils.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name=".Activities.UploadPostService"
+            android:name="com.siliconst.sahoolat.Activities.UploadPostService"
             android:enabled="true" />
 
         <meta-data
